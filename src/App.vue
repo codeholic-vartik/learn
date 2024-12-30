@@ -28,7 +28,7 @@ const fetchCurrentTabUrl = () => {
 </script>
 
 <template>
-  <header class="header">
+  <header className="text-3xl font-bold underline text-red-500 ">
     <h1>Current Tab URL: {{ currentTabUrl }}</h1>
   </header>
   <main>
@@ -37,17 +37,4 @@ const fetchCurrentTabUrl = () => {
   <MobileMenu ref="mobileMenu" />
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-  background-color: #333;
-  color: white;
-  padding: 20px;
-}
 
-h1 {
-  font-size: 18px;
-}
-
-</style>
