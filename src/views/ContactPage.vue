@@ -1,12 +1,12 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted } from "vue";
 
-const currentTabUrl = ref('');
+const currentTabUrl = ref("");
 const visitedUrls = ref([]);
 
 // Fetch data from Chrome storage
 const fetchUrls = () => {
-  chrome.storage.local.get(['currentTabUrl', 'visitedUrls'], (data) => {
+  chrome.storage.local.get(["currentTabUrl", "visitedUrls"], (data) => {
     if (data.currentTabUrl) {
       currentTabUrl.value = data.currentTabUrl;
     }
@@ -21,7 +21,7 @@ onMounted(() => {
   fetchUrls();
 
   chrome.storage.onChanged.addListener((changes, areaName) => {
-    if (areaName === 'local') {
+    if (areaName === "local") {
       if (changes.currentTabUrl) {
         currentTabUrl.value = changes.currentTabUrl.newValue;
       }
@@ -42,14 +42,17 @@ onMounted(() => {
     <main>
       <h2>Visited URLs:</h2>
       <ul>
-        <li v-for="(url, index) in visitedUrls" :key="index">{{ url }}</li>
+        <li v-for="(url, index) in visitedUrls" :key="index">
+          <a :href="url" target="_blank" rel="noopener noreferrer">{{ url }}</a>
+        </li>
       </ul>
     </main>
   </div>
 </template>
 
 <style scoped>
-header, main {
+header,
+main {
   font-family: Arial, sans-serif;
   margin: 10px;
 }
