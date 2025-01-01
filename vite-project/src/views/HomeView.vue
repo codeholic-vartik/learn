@@ -1,15 +1,31 @@
 <script setup lang="ts">
-import { defineProps } from 'vue'
+import { ref, watch } from 'vue'
 
-const props = defineProps<{
-  userId: string | null
-}>()
+const question = ref('')
+const answer = ref('Questions usually contain a question mark. ;-)')
+const loading = ref(false)
 
-console.log(props.userId) 
+// watch works directly on a ref
+watch(question, async (newQuestion, oldQuestion) => {
+  if (newQuestion.includes('?')) {
+    loading.value = true
+    answer.value = 'Thinking...'
+    try {
+      const res = await fetch('https://yesno.wtf/api')
+      answer.value = (await res.json()).answer
+    } catch (error) {
+      answer.value = 'Error! Could not reach the API. ' + error
+    } finally {
+      loading.value = false
+    }
+  }
+})
 </script>
 
 <template>
-  <div>
-    <p>User ID: {{ userId }}</p>  
-  </div>
+  <p>
+    Ask a yes/no question:
+    <input v-model="question" :disabled="loading" />
+  </p>
+  <p>{{ answer }}</p>
 </template>

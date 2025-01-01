@@ -20,20 +20,22 @@ watch(() => user.value, (newUser) => {
 </script>
 
 <template>
-  <Header/>
 
-  <RouterView :userId="userId" />
 
   <header>
+    <Header/>
+
     <SignedOut>
       <SignInButton />
     </SignedOut>
     <SignedIn>
-      <UserButton />
+      <!-- <UserButton /> -->
+      <RouterView :userId="userId" />
+      <MobileMenu />
+
     </SignedIn>
   </header>
 
-  <MobileMenu />
 </template>
 
 <style scoped>
