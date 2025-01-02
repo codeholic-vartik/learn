@@ -1,31 +1,29 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref } from "vue";
+import axios from "axios";
 
-const question = ref('')
-const answer = ref('Questions usually contain a question mark. ;-)')
-const loading = ref(false)
+const msg = ref('');
 
-// watch works directly on a ref
-watch(question, async (newQuestion, oldQuestion) => {
-  if (newQuestion.includes('?')) {
-    loading.value = true
-    answer.value = 'Thinking...'
-    try {
-      const res = await fetch('https://yesno.wtf/api')
-      answer.value = (await res.json()).answer
-    } catch (error) {
-      answer.value = 'Error! Could not reach the API. ' + error
-    } finally {
-      loading.value = false
-    }
+// Function to fetch data
+const fetchData = async () => {
+  try {
+    const response = await axios.get("http://localhost:3000/api/hello", {
+      withCredentials: true, // Includes cookies in the request
+    });
+    
+    // Assign the message from the response to msg.value
+    msg.value = response.data.message;
+    console.log(response.data);
+  } catch (error) {
+    console.error("Error fetching data:", error);
   }
-})
+};
+
+// Call the function
+fetchData();
 </script>
 
 <template>
-  <p>
-    Ask a yes/no question:
-    <input v-model="question" :disabled="loading" />
-  </p>
-  <p>{{ answer }}</p>
+  <h1>Home View</h1>
+  <p>{{ msg }}</p> <!-- Display the message -->
 </template>

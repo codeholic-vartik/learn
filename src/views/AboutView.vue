@@ -1,15 +1,29 @@
-<template>
-  <div class="about">
-    <h1>This is an about page</h1>
-  </div>
-</template>
+<script setup lang="ts">
+import { ref } from "vue";
+import axios from "axios";
 
-<style>
-@media (min-width: 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
+const msg = ref('');
+
+// Function to fetch data
+const fetchData = async () => {
+  try {
+    const response = await axios.get("http://localhost:3000/api/hello", {
+      withCredentials: true, // Includes cookies in the request
+    });
+    
+    // Assign the message from the response to msg.value
+    msg.value = response.data.message;
+    console.log(response.data);
+  } catch (error) {
+    console.error("Error fetching data:", error);
   }
-}
-</style>
+};
+
+// Call the function
+fetchData();
+</script>
+
+<template>
+  <h1>Home View</h1>
+  <p>{{ msg }}</p> <!-- Display the message -->
+</template>

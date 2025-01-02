@@ -1,0 +1,38 @@
+// app/middleware.ts
+import { NextResponse } from 'next/server';
+
+const allowedOrigins = ['http://localhost:5173', '*']; // Add more origins as needed
+
+export function middleware(req: Request) {
+  const userId = '21'; // Simulating a user ID check
+  const storedUserId = userId; // Placeholder for checking user ID (e.g., from a session or token)
+
+  // Check if the user is allowed (in this case, user ID must be '21')
+  if (storedUserId !== '21') {
+    return new NextResponse('Access denied: User is not 21', { status: 403 });
+  }
+
+  // Extract the Origin header from the request
+  const origin = req.headers.get('Origin');
+
+  // Check if the Origin is allowed
+  const response = NextResponse.next();
+  if (origin && allowedOrigins.includes(origin)) {
+    // Allow the request by setting the CORS headers
+    response.headers.set('Access-Control-Allow-Origin', origin); 
+    response.headers.set('Access-Control-Allow-Credentials', 'true'); 
+  } else {
+    response.headers.set('Access-Control-Allow-Origin', '*'); 
+  }
+
+  // Set other CORS headers
+  response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+  return response;
+}
+
+// Apply this middleware only to API routes
+export const config = {
+  matcher: '/api/:path*', // Apply middleware to all API routes
+};

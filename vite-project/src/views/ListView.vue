@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, onMounted, onUnmounted, computed } from "vue";
+import { ref, reactive, onMounted, onUnmounted, computed ,watchEffect} from "vue";
 
 const count = ref(0);
 const isActive = ref(true);
@@ -49,6 +49,12 @@ function greet(e: Event) {
     alert((e.target as HTMLInputElement).tagName);
   }
 }
+
+const message = ref('test msg');
+
+watchEffect(() => {
+      console.log(`Message: ${message.value}`);
+    });
 </script>
 
 <template>
@@ -81,7 +87,6 @@ function greet(e: Event) {
       </ul>
     </li>
     <button @click="greet">Greet</button>
-    <input @keydown.page-up="onPageDown" />
 
 
     <p>Message is: {{ message }}</p>
